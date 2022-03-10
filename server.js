@@ -7,7 +7,7 @@ const app = express();
 const AccessToken = Twilio.jwt.AccessToken;
 const ChatGrant = AccessToken.ChatGrant;
 
-app.get('/', (req, res) => {
+app.get('/token/:identity', (req, res) => {
   const token = new AccessToken(
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_API_KEY,
@@ -20,12 +20,14 @@ app.get('/', (req, res) => {
       serviceSid: process.env.TWILIO_CHAT_SERVICE_SID,
     }),
   );
-
-  res.send({
+  const response = {
     token,
     identity: token.identity,
     jwt: token.toJwt(),
-  });
+  };
+  console.log(response);
+
+  res.send(response);
 });
 
 app.listen(3001, function () {

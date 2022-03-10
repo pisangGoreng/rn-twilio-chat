@@ -12,19 +12,28 @@ import {showMessage} from 'react-native-flash-message';
 import {colors} from '../assets/themes';
 import {images} from '../assets/images';
 import {TwilioService} from '../services/twilio-service';
+import {useApp} from '../context/index';
 
 export default function ChatCreateScreen() {
   const [channelName, setChannelName] = useState('');
   const [loading, setLoading] = useState(false);
-  // const {channels, updateChannels} = useApp();
+  const {channels, updateChannels} = useApp();
 
   const onAddChannel = channel => {
     const newChannel = TwilioService.getInstance().parseChannel(channel);
-    console.log('newChannel ', newChannel);
-    // updateChannels(channels.concat(newChannel));
+    updateChannels(channels.concat(newChannel));
   };
 
-  const onCreateOrJoin = () => {
+  const onCreateOrJoin = async () => {
+    try {
+      await TwilioService.getInstance();
+    } catch (error) {
+      console.log(
+        '🚀 ~ file: chat-create.js ~ line 31 ~ onCreateOrJoin ~ error',
+        error,
+      );
+    }
+
     setLoading(true);
     TwilioService.getInstance()
       .getChatClient()
@@ -48,7 +57,10 @@ export default function ChatCreateScreen() {
           ),
       )
       .then(() => showMessage({message: 'You have joined.'}))
-      .catch(err => showMessage({message: err.message, type: 'danger'}))
+      .catch(err => {
+        console.log(err);
+        showMessage({message: err.message, type: 'danger'});
+      })
       .finally(() => setLoading(false));
   };
 

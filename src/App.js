@@ -17,16 +17,18 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import FlashMessage from 'react-native-flash-message';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-// import FlashMessage from 'react-native-flash-message';
-
 import WelcomeScreen from './screens/welcome';
 import ChatCreateScreen from './screens/chat-create';
+import ChatListScreen from './screens/chat-list';
+import ChatRoomScreen from './screens/chat-room';
 
 import {colors} from './assets/themes';
+import {AppProvider} from './context';
 
 const Stack = createNativeStackNavigator();
 export const routes = {
@@ -48,20 +50,6 @@ export const routes = {
   },
 };
 
-function HomeScreen() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'red',
-      }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
-
 const App: () => Node = () => {
   const screenOptions = title => ({
     title,
@@ -76,18 +64,31 @@ const App: () => Node = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {/* <Stack.Screen
-          name={routes.Welcome.name}
-          options={screenOptions(routes.Welcome.title)}
-          component={WelcomeScreen}
-        /> */}
-        <Stack.Screen
-          name={routes.ChatCreat.name}
-          options={screenOptions(routes.ChatCreat.title)}
-          component={ChatCreateScreen}
-        />
-      </Stack.Navigator>
+      <AppProvider>
+        <Stack.Navigator>
+          <Stack.Screen
+            name={routes.Welcome.name}
+            options={screenOptions(routes.Welcome.title)}
+            component={WelcomeScreen}
+          />
+          <Stack.Screen
+            name={routes.ChatList.name}
+            options={screenOptions(routes.ChatList.title)}
+            component={ChatListScreen}
+          />
+          <Stack.Screen
+            name={routes.ChatRoom.name}
+            options={screenOptions(routes.ChatRoom.title)}
+            component={ChatRoomScreen}
+          />
+          <Stack.Screen
+            name={routes.ChatCreat.name}
+            options={screenOptions(routes.ChatCreat.title)}
+            component={ChatCreateScreen}
+          />
+        </Stack.Navigator>
+        <FlashMessage position="bottom" />
+      </AppProvider>
     </NavigationContainer>
   );
 };
