@@ -45,7 +45,10 @@ export default function ChatRoomScreen({route}) {
         );
         setMessages(newMessages);
       })
-      .catch(err => showMessage({message: err.message, type: 'danger'}))
+      .catch(err => {
+        console.log(err);
+        showMessage({message: err.message, type: 'danger'});
+      })
       .finally(() => setLoading(false));
   }, [channelId, setChannelEvents]);
 

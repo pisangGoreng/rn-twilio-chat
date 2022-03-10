@@ -37,8 +37,8 @@ export default function ChatCreateScreen() {
     setLoading(true);
     TwilioService.getInstance()
       .getChatClient()
-      .then(client =>
-        client
+      .then(client => {
+        return client
           .getChannelByUniqueName(channelName)
           .then(channel =>
             channel.channelState.status !== 'joined' ? channel.join() : channel,
@@ -54,8 +54,8 @@ export default function ChatCreateScreen() {
                 onAddChannel(channel);
                 channel.join();
               }),
-          ),
-      )
+          );
+      })
       .then(() => showMessage({message: 'You have joined.'}))
       .catch(err => {
         console.log(err);

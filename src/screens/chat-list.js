@@ -67,17 +67,11 @@ export default function ChatListScreen({navigation, route}) {
 
   useEffect(() => {
     getToken(username)
-      .then(token => {
-        console.log(token);
-        return TwilioService.getInstance().getChatClient(token);
-      })
+      .then(token => TwilioService.getInstance().getChatClient(token))
       .then(() => TwilioService.getInstance().addTokenListener(getToken))
       .then(setChannelEvents)
       .then(getSubscribedChannels)
-      .catch(err => {
-        console.log(err);
-        showMessage({message: err.message, type: 'danger'});
-      })
+      .catch(err => showMessage({message: err.message, type: 'danger'}))
       .finally(() => setLoading(false));
 
     return () => TwilioService.getInstance().clientShutdown();

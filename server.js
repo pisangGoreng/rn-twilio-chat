@@ -2,8 +2,10 @@ require('dotenv').config();
 
 const Twilio = require('twilio');
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
 const AccessToken = Twilio.jwt.AccessToken;
 const ChatGrant = AccessToken.ChatGrant;
 

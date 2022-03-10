@@ -8,15 +8,7 @@
 
 import React from 'react';
 import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+
 import FlashMessage from 'react-native-flash-message';
 
 import {NavigationContainer} from '@react-navigation/native';
